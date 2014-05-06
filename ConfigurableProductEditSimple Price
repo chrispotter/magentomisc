@@ -1,0 +1,28 @@
+///when saving a configureable product the associated simple products price is set and saved based off of pricing value and configurable price.
+//configurable product save edit
+if($product->getTypeId() == 'configurable'){
+    $con = Mage::getModel('catalog/product_type_configurable')->setProduct($product);
+    $simples = $con->getUsedProductCollection();
+    $attributes = $product->getConfigurableAttributesData();
+    if (count($attributes)) {
+        foreach($simples as $simple){
+            $s = Mage::getModel('catalog/product')->load($simple->getId());
+            $d = $product->getConfigurableProductsData()[$s->getId()];
+            foreach($d as $a){
+                foreach ($attributes as $attribute) {
+                    /** @var Mage_Catalog_Model_Product_Type_Configurable_Attribute $attribute */
+                    if ($attribute['values']) {
+                        $values = $attribute['values'];
+                        foreach($values as $value){
+                            if(strcmp($value['label'], $a['label'])==0){
+                                $s->setPrice($value['pricing_value']+$product->getPrice());
+                            }
+                        }
+
+                    }
+                }
+            }
+            $s->save();
+        }
+    }
+};
