@@ -1,0 +1,32 @@
+//Script goes in the Catalog/ProductController/saveAction()
+//Updates the associated configureable products pricing values depending on the difference in price from simple product.
+//Only works for 1 configurable attribute assigned to product 
+if($product->getTypeId() == 'simple'){
+  $parentIds = Mage::getModel('catalog/product_type_configurable')->getParentIdsByChild($product->getId());
+  foreach($parentIds as $parentId){
+      $configurable = Mage::getModel('catalog/product')->load($parentId);
+      $con = Mage::getModel('catalog/product_type_configurable')->setProduct($configurable);
+      $attributes = $configurable->getTypeInstance()->getConfigurableAttributes();
+      $attributesArray = $configurable->getTypeInstance()->getConfigurableAttributesAsArray();
+      $index = 0;
+      foreach($attributes as $attribute){
+          if($values = $attribute->getPrices()){
+              $value_index = 0;
+              foreach($values as $value){
+                  if($value['value_index'] == $product->getData(strtolower($attribute->getLabel()))){
+                      $attributesArray[$index]['values'][$value_index]['pricing_value'] = $product->getPrice()- $configurable->getPrice();
+                  }
+                  $value_index++;
+              }
+
+          }
+          $newattribute= Mage::getModel('catalog/product_type_configurable_attribute')
+              ->setData($attributesArray[$index])
+              ->setId($attributesArray[$index]['id'])
+              ->setStoreId($configurable->getStoreId())
+              ->setProductId($configurable->getId())
+              ->save();
+          $index+=1;
+      }
+  }
+}
