@@ -43,3 +43,34 @@ $table = $installer->getConnection()
 $installer->getConnection()->createTable($table);
 
 $installer->endSetup();
+
+
+//IN CONFIG .XML
+
+<models>
+    <blueacorn_flagattribute>
+        <class>BlueAcorn_FlagAttribute_Model</class>
+        <resourceModel>blueacorn_flagattribute_resource</resourceModel>
+    </blueacorn_flagattribute>
+    <blueacorn_flagattribute_resource>
+        <class>BlueAcorn_FlagAttribute_Model_Resource</class>
+        <entities>
+            <blueacorn_flagattribute>
+                <table>blueacorn_flagattribute</table>
+            </blueacorn_flagattribute>
+        </entities>
+    </blueacorn_flagattribute_resource>
+</models>
+
+
+//init Model
+
+protected function _construct(){
+    $this->_init('blueacorn_flagattribute/flagattribute');
+}
+
+//init resource model
+
+protected function _construct(){
+    $this->_init('blueacorn_flagattribute/blueacorn_flagattribute', 'image_id');
+}
