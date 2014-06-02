@@ -1,0 +1,45 @@
+<?php
+/**
+This script creates a datatable in the database for your magento module.
+**/
+$installer = $this;
+
+$installer->startSetup();
+
+//add 2 new Columns to catalog_eav_attribute for Product Flag and Catalog Flag
+$installer->getConnection()->addColumn(
+    $this->getTable('catalog/eav_attribute'),
+    'flag_enabled_catalog', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
+        'nullable' => false,
+        'default' => '1',
+    ), 'Allow Catalog Flag');
+
+$installer->getConnection()->addColumn(
+        $this->getTable('catalog/eav_attribute'),
+        'flag_enabled_product', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
+            'nullable' => false,
+            'default' => '1',
+        ), 'Allow Product Flag');
+
+$table = $installer->getConnection()
+    ->newTable($installer->getTable('blueacorn_flagattribute'))
+    ->addColumn('image_id', Varien_Db_Ddl_Table::TYPE_INTEGER, NULL, array(
+        'auto_increment' => true,
+        'nullable' => false,
+        'primary' => true,
+    ), "Attribute Id")
+    ->addColumn('option_id', Varien_Db_Ddl_Table::TYPE_INTEGER, NULL, array(
+        'nullable' => false,
+        'default' => '1',
+    ), "Attribute Id")
+    ->addColumn('image_path', Varien_Db_Ddl_Table::TYPE_VARCHAR, NULL, array(
+        'nullable'=>false,
+        'default' => null,
+    ), "Image Path")
+    ->addForeignKey($installer->getFkName('blueacorn_flagattribute', 'option_id', 'eav/attribute_option', 'option_id'),
+        'option_id', $installer->getTable('eav/attribute_option'), 'option_id',
+        Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE);
+
+$installer->getConnection()->createTable($table);
+
+$installer->endSetup();
