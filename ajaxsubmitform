@@ -1,0 +1,26 @@
+function IconSubmit(form, grid) {
+    this.grid = grid;
+    this.form = $j(form);
+    this.url = '<?php echo $this->getIconSaveUrl()?>';
+}
+IconSubmit.prototype.submit = function () {
+    this.form.removeClass('ignore-validate');
+    var validationResult = $j.inArray(true, this.form.find(':input')
+        .map( function(elm) {
+            return Validation.validate(this, {
+                useTitle :false,
+                onElementValidate : function() {}
+            });
+        })) >= 0;
+    this.form.addClass('ignore-validate');
+    if(!validationResult){
+        return;
+    }
+    var params = this.form.find(':input').serializeArray();
+    new Ajax.Request(this.url, {
+        parameters :params,
+        method :'post',
+        area :this.form
+    });
+    this.grid.reload();
+}
