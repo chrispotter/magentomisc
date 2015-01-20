@@ -1,0 +1,1 @@
+UPDATE `admin_user` SET `failures_num` = 0, `first_failure` = NULL, `lock_expires` = NULL WHERE `username` = 'chris.potter@blueacorn.com';
