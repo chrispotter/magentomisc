@@ -1,0 +1,11 @@
+ $modules = Mage::getConfig()->getNode('modules');
+ 
+foreach ($modules->asArray() as $key => $valueArray) {
+        echo $key .' ';
+        if (isset($valueArray['active'])) {
+            echo $valueArray['active'] . ' ';
+        }if (isset($valueArray['version'])) {
+            echo ' '. $valueArray['version'] . ' ';
+        }
+        echo '</br>';
+}
