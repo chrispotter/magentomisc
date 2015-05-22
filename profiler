@@ -1,0 +1,7 @@
+<?php
+//set profiler to have unlimited memory for category pages
+//(this will sometimes max out memory when pulling product images)
+//ini_set('memory_limit', '-1');
+//Render profiler output to file 
+$head = Mage::app()->getLayout()->getBlock('head');
+Mage::helper('aoe_profiler')->renderProfilerOutputToFile($head->getTitle());
