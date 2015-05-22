@@ -1,0 +1,11 @@
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE `core_url_rewrite`;
+TRUNCATE TABLE `enterprise_catalog_category_rewrite`;
+TRUNCATE TABLE `enterprise_catalog_product_rewrite`;
+TRUNCATE TABLE `enterprise_url_rewrite`;
+TRUNCATE TABLE `enterprise_url_rewrite_category_cl`;
+TRUNCATE TABLE `enterprise_url_rewrite_product_cl`;
+TRUNCATE TABLE `enterprise_url_rewrite_redirect_cl`;
+TRUNCATE TABLE `enterprise_url_rewrite_redirect_rewrite`;
+TRUNCATE TABLE `enterprise_url_rewrite_redirect`;
+SET FOREIGN_KEY_CHECKS = 1;
